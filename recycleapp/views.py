@@ -3,10 +3,8 @@ import base64
 import io
 import os.path
 
-import torch
 import operations.image_processing as im
 import cv2
-import numpy as np
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -28,7 +26,7 @@ class ImageUploadAndProcessView(APIView):
             processed_image = im.image_processing(img)
 
             model = YOLO(os.path.join(settings.BASE_DIR, 'best.pt'))
-            results = model(processed_image, device='cuda' if torch.cuda.is_available() else 'cpu')
+            results = model(processed_image, device='cpu')
 
             # Use the Ultralytics YOLO library to draw the bounding boxes
             annotated_image = results[0].plot()  # Get annotated image with bounding boxes
